@@ -1,0 +1,32 @@
+{
+  "name": "sharefiles-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "build": "npm install",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "Rohan Shetty <shettyrohan852@gmail.com>",
+  "license": "ISC",
+  "description": "ShareFiles Backend - Secure file sharing application by Rohan Shetty",
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "mongoose": "^8.16.4",
+    "multer": "^2.0.2",
+    "nanoid": "^5.1.5",
+    "node-cron": "^4.2.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  }
+}
