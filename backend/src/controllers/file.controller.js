@@ -20,7 +20,7 @@ const getFile = asyncHandler(async (req, res) => {
         throw new ApiError(400, "File is required");
     }
 
-    // Validate file size
+    // Validate file size code
     const maxFileSize = process.env.MAX_FILE_SIZE || 20 * 1024 * 1024;
     if (uploadedFile.size > maxFileSize) {
         const fileSizeMB = (uploadedFile.size / (1024 * 1024)).toFixed(2);
