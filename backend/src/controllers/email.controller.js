@@ -19,7 +19,7 @@ export const sendEmail = async (req, res) => {
     });
 
     const mailOptions = {
-      from: process.env.GMAIL_USER, // Fixed: was using OUTLOOK_USER
+      from: process.env.GMAIL_USER, // Fixed:was using OUTLOOK_USER
       to: email,
       subject: "You've received a file from ShareFiles!",
       html: `
