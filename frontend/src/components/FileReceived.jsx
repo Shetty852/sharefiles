@@ -11,6 +11,47 @@ export default function FileReceived() {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
 
+  // Download function
+  const handleDownload = async () => {
+    try {
+      const downloadUrl = state.downloadUrl;
+      
+      // Try to fetch the file first to check if it exists
+      const response = await fetch(downloadUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/octet-stream',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Create blob from response
+      const blob = await response.blob();
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = state.file?.name || state.name || 'download';
+      document.body.appendChild(link);
+      link.click();
+      
+      // Cleanup
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("Download started!", { position: "top-right" });
+    } catch (error) {
+      console.error("Download error:", error);
+      toast.error(`Download failed: ${error.message}`, { position: "top-right" });
+      // Fallback to direct link
+      window.open(state.downloadUrl, '_blank');
+    }
+  };
+
   useEffect(() => {
     if (!state?.expiresAt) return;
     const expiryTime = new Date(state.expiresAt).getTime();
@@ -117,17 +158,33 @@ export default function FileReceived() {
   </div>
 </div>
 
-          <p className="break-words">
-            <strong>🔗 Link:</strong>{" "}
-            <a
-              href={state.downloadUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline break-all text-blue-400 hover:text-blue-300"
-            >
-              {state.downloadUrl}
-            </a>
-          </p>
+          <div className="space-y-4">
+            <p className="break-words">
+              <strong>🔗 Download:</strong>{" "}
+              <button
+                onClick={handleDownload}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 font-medium"
+              >
+                📥 Download File
+              </button>
+            </p>
+            
+            <p className="break-words text-sm">
+              <strong>Direct Link:</strong>{" "}
+              <a
+                href={state.downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline break-all text-blue-400 hover:text-blue-300"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDownload();
+                }}
+              >
+                {state.downloadUrl}
+              </a>
+            </p>
+          </div>
     
         </div>
 
