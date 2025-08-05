@@ -11,44 +11,79 @@ export default function FileReceived() {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
 
-  // Download function
+  // Download function with proper security handling
   const handleDownload = async () => {
     try {
       const downloadUrl = state.downloadUrl;
       
-      // Try to fetch the file first to check if it exists
+      // For cross-origin downloads, use a different approach
+      // First, try to fetch with proper headers
       const response = await fetch(downloadUrl, {
         method: 'GET',
+        credentials: 'omit', // Don't send credentials for cross-origin
+        mode: 'cors',
         headers: {
-          'Accept': 'application/octet-stream',
+          'Accept': '*/*',
         },
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Download failed: ${response.status} ${response.statusText}`);
       }
       
-      // Create blob from response
+      // Get the blob
       const blob = await response.blob();
       
-      // Create download link
+      // Get filename from response headers or use default
+      const contentDisposition = response.headers.get('content-disposition');
+      let filename = state.file?.name || state.name || 'download';
+      
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+        if (filenameMatch && filenameMatch[1]) {
+          filename = filenameMatch[1].replace(/['"]/g, '');
+        }
+      }
+      
+      // Create and trigger download
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
+      link.style.display = 'none';
       link.href = url;
-      link.download = state.file?.name || state.name || 'download';
+      link.download = filename;
+      
+      // Add to DOM, click, and remove
       document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
       
       // Cleanup
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
       
-      toast.success("Download started!", { position: "top-right" });
+      toast.success("Download started successfully!", { position: "top-right" });
     } catch (error) {
       console.error("Download error:", error);
-      toast.error(`Download failed: ${error.message}`, { position: "top-right" });
-      // Fallback to direct link
-      window.open(state.downloadUrl, '_blank');
+      
+      // Fallback: Open in new window with download attributes
+      try {
+        const link = document.createElement('a');
+        link.href = state.downloadUrl;
+        link.download = state.file?.name || state.name || 'download';
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        toast.info("Opening download in new tab...", { position: "top-right" });
+      } catch (fallbackError) {
+        console.error("Fallback download failed:", fallbackError);
+        toast.error("Download failed. Please right-click the link and 'Save as...'", { 
+          position: "top-right",
+          autoClose: 6000 
+        });
+      }
     }
   };
 
@@ -159,31 +194,42 @@ export default function FileReceived() {
 </div>
 
           <div className="space-y-4">
-            <p className="break-words">
-              <strong>🔗 Download:</strong>{" "}
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleDownload}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 font-medium shadow-lg hover:shadow-xl"
               >
                 📥 Download File
               </button>
-            </p>
-            
-            <p className="break-words text-sm">
-              <strong>Direct Link:</strong>{" "}
+              
               <a
                 href={state.downloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline break-all text-blue-400 hover:text-blue-300"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleDownload();
-                }}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium shadow-lg hover:shadow-xl"
+                download={state.file?.name || state.name}
               >
-                {state.downloadUrl}
+                🔗 Direct Link
               </a>
-            </p>
+            </div>
+            
+            <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+              <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                💡 <strong>Having trouble downloading?</strong><br/>
+                • Try the "Direct Link" button<br/>
+                • Right-click the link below and select "Save link as..."<br/>
+                • Check your browser's download settings
+              </p>
+            </div>
+            
+            <details className="text-sm">
+              <summary className="cursor-pointer font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
+                🔗 Show full download URL
+              </summary>
+              <p className="mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg break-all font-mono text-xs">
+                {state.downloadUrl}
+              </p>
+            </details>
           </div>
     
         </div>

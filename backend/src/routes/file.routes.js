@@ -37,6 +37,10 @@ router.get("/download/id/:id", asyncHandler(async (req, res) => {
 
   if (!fs.existsSync(filePath)) throw new ApiError(404, "File missing");
 
+  // Set proper headers for secure download
+  res.setHeader('Content-Disposition', `attachment; filename="${fileDoc.originalName || filename}"`);
+  res.setHeader('Content-Type', 'application/octet-stream');
+
   // Increment download count
   await File.findByIdAndUpdate(req.params.id, { 
     $inc: { downloadCount: 1 } 
