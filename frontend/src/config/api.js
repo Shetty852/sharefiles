@@ -1,8 +1,8 @@
 // API Configuration for ShareFiles Frontend
 // Last updated: January 2025 - Production ready
 export const API_CONFIG = {
-  // Base API URL
-  BASE_URL: import.meta.env.VITE_API_BASE || 'http://localhost:5000/api',
+  // Base API URL - defaults to production backend
+  BASE_URL: import.meta.env.VITE_API_BASE || 'https://sharefiles-backend.onrender.com/api',
   
   // App Configuration
   APP_NAME: import.meta.env.VITE_APP_NAME || 'ShareFiles',
