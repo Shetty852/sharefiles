@@ -29,7 +29,7 @@ const getFile = asyncHandler(async (req, res) => {
     }
 
     const relativePath = `/temp/${uploadedFile.filename}`; 
-    const fileUrl = `${req.protocol}://${req.get("host")}${relativePath}`; 
+    const fileUrl = `https://${req.get("host")}${relativePath}`; 
     const code = await generateUniqueCode()
     
     const file = await File.create({
@@ -44,7 +44,7 @@ const getFile = asyncHandler(async (req, res) => {
         expiresAt: expiresAt.toISOString()
     });
 
-    const downloadLink = `${req.protocol}://${req.get("host")}/api/v1/file/download/id/${file._id}`;
+    const downloadLink = `https://${req.get("host")}/api/v1/file/download/id/${file._id}`;
     console.log("Download Link:", downloadLink);
     const qrCode = await QRCode.toDataURL(downloadLink)
     
@@ -81,7 +81,7 @@ const getCode = asyncHandler(async (req, res) => {
       throw new ApiError(410, "Code expired");
     }
   
-    const downloadLink = `${req.protocol}://${req.get("host")}/api/v1/file/download/code/${code}`;
+    const downloadLink = `https://${req.get("host")}/api/v1/file/download/code/${code}`;
     const qrcode = await QRCode.toDataURL(downloadLink);
   
     return res.status(200).json(
@@ -140,7 +140,7 @@ const getBulkFiles = asyncHandler(async (req, res) => {
     for (const uploadedFile of validFiles) {
         try {
             const relativePath = `/temp/${uploadedFile.filename}`; 
-            const fileUrl = `${req.protocol}://${req.get("host")}${relativePath}`; 
+            const fileUrl = `https://${req.get("host")}${relativePath}`; 
             const code = await generateUniqueCode();
             
             const file = await File.create({
@@ -155,7 +155,7 @@ const getBulkFiles = asyncHandler(async (req, res) => {
                 expiresAt: expiresAt.toISOString()
             });
 
-            const downloadLink = `${req.protocol}://${req.get("host")}/api/v1/file/download/id/${file._id}`;
+            const downloadLink = `https://${req.get("host")}/api/v1/file/download/id/${file._id}`;
             const qrCode = await QRCode.toDataURL(downloadLink);
 
             processedFiles.push({
@@ -194,7 +194,7 @@ const getBulkFiles = asyncHandler(async (req, res) => {
     });
 
     // Generate bulk download link
-    const bulkDownloadLink = `${req.protocol}://${req.get("host")}/api/v1/file/bulk/download/${bulkId}`;
+    const bulkDownloadLink = `https://${req.get("host")}/api/v1/file/bulk/download/${bulkId}`;
     const bulkQrCode = await QRCode.toDataURL(bulkDownloadLink);
 
     return res.status(201).json(
@@ -230,7 +230,7 @@ const getBulkUpload = asyncHandler(async (req, res) => {
 
     // Generate download links for all files
     const filesWithLinks = bulkUpload.files.map(file => {
-        const downloadLink = `${req.protocol}://${req.get("host")}/api/v1/file/download/id/${file.fileId._id}`;
+        const downloadLink = `https://${req.get("host")}/api/v1/file/download/id/${file.fileId._id}`;
         return {
             ...file.toObject(),
             downloadUrl: downloadLink,
@@ -238,7 +238,7 @@ const getBulkUpload = asyncHandler(async (req, res) => {
         };
     });
 
-    const bulkDownloadLink = `${req.protocol}://${req.get("host")}/api/v1/file/bulk/download/${bulkId}`;
+    const bulkDownloadLink = `https://${req.get("host")}/api/v1/file/bulk/download/${bulkId}`;
 
     return res.status(200).json(
         new ApiResponse(200, {
