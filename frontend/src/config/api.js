@@ -1,4 +1,5 @@
 // API Configuration for ShareFiles Frontend
+// Last updated: January 2025 - Production ready
 export const API_CONFIG = {
   // Base API URL
   BASE_URL: import.meta.env.VITE_API_BASE || 'http://localhost:5000/api',
