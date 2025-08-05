@@ -168,10 +168,10 @@ const Receive = () => {
 
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-16 text-center"
-        initial="hidden"
-        whileInView="visible"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ staggerChildren: 0.2 }}
+        transition={{ duration: 0.6, staggerChildren: 0.2 }}
       >
         {features.map((feature, i) => (
           <motion.div
@@ -181,6 +181,9 @@ const Receive = () => {
                 ? "bg-white text-gray-800 border border-gray-200"
                 : "bg-[#1f1f1f] text-white border border-gray-700"
             }`}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1, duration: 0.4 }}
             whileHover={{ scale: 1.05 }}
           >
             <div className="text-3xl mb-2">{feature.icon}</div>
