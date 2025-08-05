@@ -5,8 +5,7 @@ import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import ThemeContext from "../context/ThemeContext";
 import { Upload, X, FileIcon, Download, Share2, QrCode } from "lucide-react";
-
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
+import { API_CONFIG, getApiUrl } from "../config/api.js";
 
 const BulkSend = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -98,7 +97,7 @@ const BulkSend = () => {
     setIsUploading(true);
 
     try {
-      const response = await axios.post(`${API_BASE}/v1/file/bulk/upload`, formData, {
+      const response = await axios.post(getApiUrl(API_CONFIG.ENDPOINTS.BULK_UPLOAD), formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

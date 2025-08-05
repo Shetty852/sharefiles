@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import ThemeContext from "../context/ThemeContext";
-
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
+import { API_CONFIG, getApiUrl } from "../config/api.js";
 
 const Receive = () => {
   const [code, setCode] = useState("");
@@ -26,7 +25,7 @@ const Receive = () => {
       
     try {
       const response = await axios.post(
-        `${API_BASE}/v1/file/check`,
+        getApiUrl(API_CONFIG.ENDPOINTS.CHECK),
         { code },
         { headers: { "Content-Type": "application/json" } }
       );

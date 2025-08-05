@@ -5,9 +5,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import ThemeContext from "../context/ThemeContext";
-
-// API Configuration with fallback
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
+import { API_CONFIG, getApiUrl } from "../config/api.js";
 
 const Send = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -84,7 +82,7 @@ const Send = () => {
     setFileUpload(true);
 
     try {
-      const response = await axios.post(`${API_BASE}/v1/file/upload`, formData, {
+      const response = await axios.post(getApiUrl(API_CONFIG.ENDPOINTS.UPLOAD), formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

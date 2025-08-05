@@ -6,8 +6,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import ThemeContext from "../context/ThemeContext";
 import { Download, FileIcon, QrCode, Copy, Package, Clock, CheckCircle, XCircle } from "lucide-react";
-
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
+import { API_CONFIG, getApiUrl } from "../config/api.js";
 
 const BulkReceive = () => {
   const [code, setCode] = useState("");
@@ -64,7 +63,7 @@ const BulkReceive = () => {
   };
 
   const checkBulkCode = async () => {
-    const response = await axios.get(`${API_BASE}/v1/file/bulk/${code.trim()}`);
+    const response = await axios.get(getApiUrl(`${API_CONFIG.ENDPOINTS.BULK_INFO}/${code.trim()}`));
     const data = response.data.data;
     
     setBulkData(data);
@@ -73,7 +72,7 @@ const BulkReceive = () => {
 
   const checkSingleCode = async () => {
     const response = await axios.post(
-      `${API_BASE}/v1/file/check`,
+      getApiUrl(API_CONFIG.ENDPOINTS.CHECK),
       { code: code.trim() },
       { headers: { "Content-Type": "application/json" } }
     );
