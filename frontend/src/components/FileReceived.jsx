@@ -129,33 +129,33 @@ export default function FileReceived() {
     
   return (
     <div
-      className={`min-h-screen px-4 py-10 flex justify-center items-center transition-all duration-300 ${
+      className={`min-h-screen px-2 sm:px-4 lg:px-6 py-6 sm:py-10 flex justify-center items-center transition-all duration-300 ${
         theme === "light"
           ? "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"
           : "bg-gradient-to-l from-[#0f0f0f] to-[#1f1f1f]"
       }`}
     >
-      {/* Background blur effects */}
+      {/* Background blur effects - responsive positioning */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl opacity-20 ${theme === 'light' ? 'bg-blue-400' : 'bg-pink-400'}`}></div>
-        <div className={`absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full blur-3xl opacity-20 ${theme === 'light' ? 'bg-indigo-400' : 'bg-red-400'}`}></div>
-        <div className={`absolute top-3/4 left-1/2 w-32 h-32 rounded-full blur-2xl opacity-30 ${theme === 'light' ? 'bg-purple-400' : 'bg-orange-400'}`}></div>
+        <div className={`absolute top-1/4 left-1/4 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 rounded-full blur-3xl opacity-20 ${theme === 'light' ? 'bg-blue-400' : 'bg-pink-400'}`}></div>
+        <div className={`absolute bottom-1/4 right-1/4 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 rounded-full blur-3xl opacity-20 ${theme === 'light' ? 'bg-indigo-400' : 'bg-red-400'}`}></div>
+        <div className={`absolute top-3/4 left-1/2 w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full blur-2xl opacity-30 ${theme === 'light' ? 'bg-purple-400' : 'bg-orange-400'}`}></div>
       </div>
       
       <ToastContainer />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`relative z-10 shadow-2xl p-8 rounded-3xl max-w-2xl w-full space-y-6 transition-all backdrop-blur-md ${
+        className={`relative z-10 shadow-2xl p-4 sm:p-6 lg:p-8 rounded-2xl lg:rounded-3xl max-w-sm sm:max-w-md lg:max-w-2xl xl:max-w-3xl w-full space-y-4 sm:space-y-6 transition-all backdrop-blur-md ${
           theme === "light"
             ? "bg-white/80 text-gray-800 shadow-blue-500/20"
             : "bg-[#1a1a1a]/80 text-gray-200 border border-gray-700 shadow-pink-500/20"
         }`}
       >
         <div className="text-center">
-          <div className="text-5xl mb-3">📁</div>
+          <div className="text-4xl sm:text-5xl lg:text-6xl mb-2 sm:mb-3">📁</div>
           <h1
-            className={`text-3xl font-bold mb-2 ${
+            className={`text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 leading-tight ${
               theme === "light"
                 ? "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent"
                 : "bg-gradient-to-r from-pink-400 to-red-500 bg-clip-text text-transparent"
@@ -163,44 +163,45 @@ export default function FileReceived() {
           >
             File Received Successfully! 🎉
           </h1>
-          <p className={theme === "light" ? "text-gray-600" : "text-gray-300"}>
+          <p className={`text-sm sm:text-base lg:text-lg ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>
             Your file is ready to download and share
           </p>
         </div>
 
         <div
-          className={`text-sm sm:text-base space-y-4 ${
+          className={`text-sm sm:text-base space-y-4 sm:space-y-6 ${
             theme === "light" ? "text-gray-700" : "text-gray-300"
           }`}
         >
-          <div className={`p-4 rounded-xl ${theme === "light" ? "bg-blue-50 border border-blue-200" : "bg-gray-800 border border-gray-600"}`}>
-            <p className="flex items-center gap-2">
-              <span className="text-xl">📄</span>
-              <strong>File Name:</strong> {state.file?.name || state.name}
+          <div className={`p-4 sm:p-5 lg:p-6 rounded-xl ${theme === "light" ? "bg-blue-50 border border-blue-200" : "bg-gray-800 border border-gray-600"}`}>
+            <p className="flex items-center gap-2 sm:gap-3">
+              <span className="text-lg sm:text-xl">📄</span>
+              <strong className="text-sm sm:text-base">File Name:</strong> 
+              <span className="break-all text-sm sm:text-base">{state.file?.name || state.name}</span>
             </p>
             {state.file?.size && (
-              <p className="flex items-center gap-2 mt-2 text-sm opacity-80">
-                <span className="text-lg">📊</span>
+              <p className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-3 text-sm sm:text-base opacity-80">
+                <span className="text-lg sm:text-xl">📊</span>
                 <strong>Size:</strong> {(state.file.size / (1024 * 1024)).toFixed(2)} MB
               </p>
             )}
           </div>
-          <div className={`p-4 rounded-xl ${theme === "light" ? "bg-indigo-50 border border-indigo-200" : "bg-gray-800 border border-gray-600"}`}>
-            <label htmlFor="myCode" className={`font-semibold ${theme==='light'?'text-gray-700':'text-gray-300'} flex items-center gap-2 mb-3`}>
-              <span className="text-xl">🔑</span> Unique Access Code:
+          <div className={`p-4 sm:p-5 lg:p-6 rounded-xl ${theme === "light" ? "bg-indigo-50 border border-indigo-200" : "bg-gray-800 border border-gray-600"}`}>
+            <label htmlFor="myCode" className={`font-semibold text-sm sm:text-base ${theme==='light'?'text-gray-700':'text-gray-300'} flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4`}>
+              <span className="text-lg sm:text-xl">🔑</span> Unique Access Code:
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <input
                 type="text"
                 value={state.uniqueCode}
                 id="myCode"
                 readOnly
                 tabIndex={-1}
-                className={`flex-1 px-4 py-3 text-lg font-mono rounded-lg border ${theme==='light'?'bg-white text-gray-800 border-gray-300 focus:border-blue-500': 'bg-[#1f1f1f] text-white border-gray-600 focus:border-pink-500'} shadow-sm focus:outline-none focus:ring-2 focus:ring-opacity-50 ${theme === 'light' ? 'focus:ring-blue-500' : 'focus:ring-pink-500'} pointer-events-none cursor-default`}
+                className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 text-base sm:text-lg font-mono rounded-lg border ${theme==='light'?'bg-white text-gray-800 border-gray-300 focus:border-blue-500': 'bg-[#1f1f1f] text-white border-gray-600 focus:border-pink-500'} shadow-sm focus:outline-none focus:ring-2 focus:ring-opacity-50 ${theme === 'light' ? 'focus:ring-blue-500' : 'focus:ring-pink-500'} pointer-events-none cursor-default`}
               />
               <button
                 onClick={copyFunction}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg ${
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 shadow-lg ${
                   theme === "light" 
                     ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-blue-500/30 hover:shadow-blue-500/50" 
                     : "bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700 text-white shadow-pink-500/30 hover:shadow-pink-500/50"
@@ -211,11 +212,11 @@ export default function FileReceived() {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-3">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <button
                 onClick={handleDownload}
-                className={`inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg ${
+                className={`inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg ${
                   theme === "light" 
                     ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-blue-500/30 hover:shadow-blue-500/50" 
                     : "bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700 text-white shadow-pink-500/30 hover:shadow-pink-500/50"
@@ -228,7 +229,7 @@ export default function FileReceived() {
                 href={state.downloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-lg border-2 transition-all duration-300 transform hover:scale-105 ${
+                className={`inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-lg border-2 transition-all duration-300 transform hover:scale-105 ${
                   theme === "light" 
                     ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white bg-white/80 backdrop-blur-sm" 
                     : "border-red-500 text-red-300 hover:bg-red-500 hover:text-white bg-[#1f1f1f]/80 backdrop-blur-sm"
@@ -239,20 +240,20 @@ export default function FileReceived() {
               </a>
             </div>
             
-            <div className={`p-4 rounded-xl border ${theme === "light" ? "bg-yellow-50 border-yellow-200" : "bg-yellow-900/20 border-yellow-800"}`}>
-              <p className={`text-sm ${theme === "light" ? "text-yellow-800" : "text-yellow-200"}`}>
-                <span className="text-lg">💡</span> <strong>Having trouble downloading?</strong><br/>
+            <div className={`p-4 sm:p-5 rounded-xl border ${theme === "light" ? "bg-yellow-50 border-yellow-200" : "bg-yellow-900/20 border-yellow-800"}`}>
+              <p className={`text-sm sm:text-base ${theme === "light" ? "text-yellow-800" : "text-yellow-200"}`}>
+                <span className="text-base sm:text-lg">💡</span> <strong>Having trouble downloading?</strong><br/>
                 • Try the "Direct Link" button above<br/>
                 • Right-click the full URL below and select "Save link as..."<br/>
                 • Check your browser's download settings and popup blocker
               </p>
             </div>
             
-            <details className="text-sm">
+            <details className="text-sm sm:text-base">
               <summary className={`cursor-pointer font-medium transition-colors ${theme === "light" ? "text-gray-600 hover:text-gray-800" : "text-gray-400 hover:text-gray-200"}`}>
                 🔗 Show full download URL
               </summary>
-              <p className={`mt-2 p-3 rounded-lg break-all font-mono text-xs ${theme === "light" ? "bg-gray-100 text-gray-700" : "bg-gray-800 text-gray-300"}`}>
+              <p className={`mt-2 sm:mt-3 p-3 sm:p-4 rounded-lg break-all font-mono text-xs sm:text-sm ${theme === "light" ? "bg-gray-100 text-gray-700" : "bg-gray-800 text-gray-300"}`}>
                 {state.downloadUrl}
               </p>
             </details>
@@ -262,13 +263,13 @@ export default function FileReceived() {
 
         {state.qrCode && (
           <div className="flex justify-center">
-            <div className={`p-4 rounded-xl ${theme === "light" ? "bg-white shadow-lg" : "bg-gray-800 border border-gray-600"}`}>
+            <div className={`p-4 sm:p-5 lg:p-6 rounded-xl ${theme === "light" ? "bg-white shadow-lg" : "bg-gray-800 border border-gray-600"}`}>
               <img
                 src={state.qrCode}
                 alt="QR Code for easy sharing"
-                className="w-32 h-32 sm:w-40 sm:h-40 rounded-lg"
+                className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-lg mx-auto"
               />
-              <p className={`text-center text-xs mt-2 ${theme === "light" ? "text-gray-600" : "text-gray-400"}`}>
+              <p className={`text-center text-xs sm:text-sm mt-2 sm:mt-3 ${theme === "light" ? "text-gray-600" : "text-gray-400"}`}>
                 📱 Scan to download on mobile
               </p>
             </div>
@@ -276,14 +277,14 @@ export default function FileReceived() {
         )}
 
         {timeLeft > 0 && (
-          <div className={`text-center p-4 rounded-xl border ${theme === "light" ? "bg-red-50 border-red-200" : "bg-red-900/20 border-red-800"}`}>
-            <p className={`text-sm ${theme === "light" ? "text-red-700" : "text-red-300"}`}>
+          <div className={`text-center p-4 sm:p-5 lg:p-6 rounded-xl border ${theme === "light" ? "bg-red-50 border-red-200" : "bg-red-900/20 border-red-800"}`}>
+            <p className={`text-sm sm:text-base ${theme === "light" ? "text-red-700" : "text-red-300"}`}>
               ⏱️ <strong>Link expires in:</strong>
             </p>
-            <p className={`text-3xl font-mono font-bold mt-2 ${theme === "light" ? "text-red-600" : "text-red-400"} animate-pulse`}>
+            <p className={`text-2xl sm:text-3xl lg:text-4xl font-mono font-bold mt-2 sm:mt-3 ${theme === "light" ? "text-red-600" : "text-red-400"} animate-pulse`}>
               {formatTime(timeLeft)}
             </p>
-            <p className={`text-xs mt-1 ${theme === "light" ? "text-red-600" : "text-red-400"}`}>
+            <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${theme === "light" ? "text-red-600" : "text-red-400"}`}>
               Download now before it expires!
             </p>
           </div>
@@ -293,7 +294,7 @@ export default function FileReceived() {
         <div className="text-center">
           <button
             onClick={() => navigate('/')}
-            className={`px-8 py-3 text-lg font-semibold rounded-lg border-2 transition-all duration-300 transform hover:scale-105 ${
+            className={`px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-lg border-2 transition-all duration-300 transform hover:scale-105 ${
               theme === "light" 
                 ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white bg-white/80 backdrop-blur-sm" 
                 : "border-red-500 text-red-300 hover:bg-red-500 hover:text-white bg-[#1f1f1f]/80 backdrop-blur-sm"
