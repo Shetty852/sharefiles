@@ -93,8 +93,7 @@ const Send = () => {
         navigate("/fileReceived", {
           state: { file, downloadUrl, uniqueCode, qrCode, expiresAt },
         });
-        window.location.reload(true);
-      }, 3000);
+      }, 2000);
     } catch (err) {
       // Show specific error message from backend if available
       const errorMessage = err.response?.data?.message || "File not uploaded";
