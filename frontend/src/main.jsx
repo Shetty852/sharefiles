@@ -17,11 +17,12 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ThemeProvider>
         <Routes>
+          <Route path='/' element={<App/>}/>
           <Route path='/fileReceived' element={<FileReceived/>}/>
           <Route path='/bulk-send' element={<BulkSend/>}/>
           <Route path='/bulk-receive' element={<BulkReceive/>}/>
-          <Route path='/' element={<App/>}/>
           <Route path='/about' element={<About/>}/>
+          <Route path='*' element={<App/>}/>
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
