@@ -1,4 +1,5 @@
 import { Router } from "express";
+import multer from "multer";
 import { getCode, getFile, getBulkFiles, getBulkUpload } from "../controllers/file.controller.js";
 import { upload } from "../middlewares/upload.middleware.js"
 // import { uploadRateLimit, codeRateLimit } from "../middlewares/rateLimit.middleware.js";
@@ -12,8 +13,45 @@ import archiver from "archiver";
 
 const router = Router();
 
-router.post("/upload", upload.single("file"), getFile);
-router.post("/bulk/upload", upload.array("files", 10), getBulkFiles); // Allow up to 10 files
+// Add multer error handling middleware
+const handleMulterError = (err, req, res, next) => {
+  console.log("Multer Error:", err);
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        success: false,
+        message: `File too large. Maximum size allowed is ${process.env.MAX_FILE_SIZE || '20MB'}`
+      });
+    }
+    return res.status(400).json({
+      success: false,
+      message: `Upload error: ${err.message}`
+    });
+  }
+  next(err);
+};
+
+router.post("/upload", (req, res, next) => {
+  console.log("Upload endpoint hit");
+  upload.single("file")(req, res, (err) => {
+    if (err) {
+      console.log("Upload middleware error:", err);
+      return handleMulterError(err, req, res, next);
+    }
+    next();
+  });
+}, getFile);
+
+router.post("/bulk/upload", (req, res, next) => {
+  console.log("Bulk upload endpoint hit");
+  upload.array("files", 10)(req, res, (err) => {
+    if (err) {
+      console.log("Bulk upload middleware error:", err);
+      return handleMulterError(err, req, res, next);
+    }
+    next();
+  });
+}, getBulkFiles);
 router.get("/bulk/:bulkId", getBulkUpload);
 router.post("/check", getCode)
 

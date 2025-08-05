@@ -12,11 +12,19 @@ const EXPIRY_DURATION = process.env.FILE_EXPIRY_MINUTES
     ? parseInt(process.env.FILE_EXPIRY_MINUTES) * 60 * 1000 
     : 5 * 60 * 1000; // Default 5 minutes
 const getFile = asyncHandler(async (req, res) => {
+    console.log("=== File Upload Request ===");
+    console.log("req.file:", req.file);
+    console.log("req.files:", req.files);
+    console.log("req.body:", req.body);
+    console.log("Content-Type:", req.get('Content-Type'));
+    console.log("============================");
+    
     const uploadedFile = req.file; 
     const expiresAt = new Date(Date.now() + EXPIRY_DURATION);
     const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
     
     if (!uploadedFile) {
+        console.log("ERROR: No file received in request");
         throw new ApiError(400, "File is required");
     }
 
