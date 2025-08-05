@@ -18,24 +18,41 @@ router.get("/bulk/:bulkId", getBulkUpload);
 router.post("/check", getCode)
 
 router.get("/download/id/:id", asyncHandler(async (req, res) => {
+  console.log(`Download request for ID: ${req.params.id}`);
+  
+  // Set CORS headers explicitly for downloads
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
   const fileDoc = await File.findById(req.params.id);
-  if (!fileDoc) throw new ApiError(404, "File not found");
+  if (!fileDoc) {
+    console.log(`File not found in database: ${req.params.id}`);
+    throw new ApiError(404, "File not found");
+  }
 
   // Check if file has expired
   if (new Date(fileDoc.expiresAt) < new Date()) {
+    console.log(`File expired: ${req.params.id}`);
     throw new ApiError(410, "File has expired");
   }
 
   // Check download limit
   if (fileDoc.downloadCount >= fileDoc.maxDownloads) {
+    console.log(`Download limit exceeded: ${req.params.id}`);
     throw new ApiError(403, "Download limit exceeded");
   }
 
   const fileUrl = fileDoc.file;
   const filename = fileUrl.split("/").pop();
   const filePath = path.resolve("public", "temp", filename);
+  
+  console.log(`Looking for file at: ${filePath}`);
 
-  if (!fs.existsSync(filePath)) throw new ApiError(404, "File missing");
+  if (!fs.existsSync(filePath)) {
+    console.log(`File missing on disk: ${filePath}`);
+    throw new ApiError(404, "File missing");
+  }
 
   // Set proper headers for secure download
   res.setHeader('Content-Disposition', `attachment; filename="${fileDoc.originalName || filename}"`);
@@ -46,28 +63,44 @@ router.get("/download/id/:id", asyncHandler(async (req, res) => {
     $inc: { downloadCount: 1 } 
   });
 
+  console.log(`Serving file: ${fileDoc.originalName || filename}`);
   res.download(filePath, fileDoc.originalName || filename);
 }));
 
 router.get("/download/code/:code", asyncHandler(async (req, res) => {
+  console.log(`Download request for code: ${req.params.code}`);
+  
+  // Set CORS headers explicitly for downloads
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
   const fileDoc = await File.findOne({ code: req.params.code });
 
-  if (!fileDoc) throw new ApiError(404, "File not found");
+  if (!fileDoc) {
+    console.log(`File not found for code: ${req.params.code}`);
+    throw new ApiError(404, "File not found");
+  }
 
   // Check if file has expired
   if (new Date(fileDoc.expiresAt) < new Date()) {
+    console.log(`File expired for code: ${req.params.code}`);
     throw new ApiError(410, "File has expired");
   }
 
   // Check download limit
   if (fileDoc.downloadCount >= fileDoc.maxDownloads) {
+    console.log(`Download limit exceeded for code: ${req.params.code}`);
     throw new ApiError(403, "Download limit exceeded");
   }
 
   const filename = fileDoc.file.split("/").pop();
   const filePath = path.resolve("public", "temp", filename);
+  
+  console.log(`Looking for file at: ${filePath}`);
 
   if (!fs.existsSync(filePath)) {
+    console.log(`File missing on disk: ${filePath}`);
     throw new ApiError(404, "File not found on disk");
   }
 
@@ -77,6 +110,7 @@ router.get("/download/code/:code", asyncHandler(async (req, res) => {
     { $inc: { downloadCount: 1 } }
   );
 
+  console.log(`Serving file: ${fileDoc.originalName || filename}`);
   res.download(filePath, fileDoc.originalName || filename);
 }));
 router.get("/meta/:id", asyncHandler(async (req, res) => {
