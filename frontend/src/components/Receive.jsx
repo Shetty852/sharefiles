@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import ThemeContext from "../context/ThemeContext";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
 
 const Receive = () => {
   const [code, setCode] = useState("");

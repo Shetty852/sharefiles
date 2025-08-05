@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import ThemeContext from "../context/ThemeContext";
 import { Download, FileIcon, QrCode, Copy, Package, Clock, CheckCircle, XCircle } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
 
 const BulkReceive = () => {
   const [code, setCode] = useState("");

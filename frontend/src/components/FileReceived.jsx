@@ -4,7 +4,7 @@ import { motion } from "framer-motion"; // eslint-disable-line
 import ThemeContext from "../context/ThemeContext";
 import { toast, ToastContainer } from "react-toastify";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
 
 export default function FileReceived() {
   const { state } = useLocation();

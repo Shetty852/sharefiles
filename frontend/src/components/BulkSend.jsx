@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import ThemeContext from "../context/ThemeContext";
 import { Upload, X, FileIcon, Download, Share2, QrCode } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
 
 const BulkSend = () => {
   const [isDragging, setIsDragging] = useState(false);
