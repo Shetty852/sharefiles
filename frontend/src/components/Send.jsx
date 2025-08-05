@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useContext } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -123,6 +124,7 @@ const Send = () => {
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.6 }}
         className={`text-5xl font-extrabold text-center mb-10 ${
           theme === 'light'
@@ -199,6 +201,7 @@ const Send = () => {
           className="flex flex-wrap justify-center gap-4 mt-8"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           {[
@@ -209,8 +212,16 @@ const Send = () => {
           ].map((type, i) => (
             <motion.div
               key={i}
-              whileHover={{ y: -4, rotate: -3 }}
-              transition={{ type: "spring", stiffness: 200 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ y: -4, rotate: -3, scale: 1.05 }}
+              viewport={{ once: true }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 200,
+                delay: i * 0.1,
+                duration: 0.3
+              }}
               className={`w-24 h-24 rounded-lg shadow-md flex flex-col items-center justify-center transition-all duration-300 hover:border-blue-500 hover:bg-blue-50 ${
                 theme === 'light'
                   ? 'bg-white border border-gray-300 text-gray-700'
@@ -231,6 +242,7 @@ const Send = () => {
           }`}
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           <li className="w-full sm:w-auto px-2">✅ All file types supported</li>

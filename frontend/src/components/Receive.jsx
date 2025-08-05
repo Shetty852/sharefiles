@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import { motion } from "framer-motion";
@@ -183,6 +184,7 @@ const Receive = () => {
             }`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: i * 0.1, duration: 0.4 }}
             whileHover={{ scale: 1.05 }}
           >
