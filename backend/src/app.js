@@ -30,6 +30,13 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Add debugging middleware for temp file requests
+app.use("/temp", (req, res, next) => {
+  console.log(`Static file request: ${req.path}`);
+  next();
+});
+
 app.use("/temp", express.static("public/temp"));
 
 app.use(express.urlencoded({extended: true}))
@@ -54,9 +61,8 @@ app.get("/health", (req, res) => {
   });
 });
 
-export {app}
-
-
+// Import routes
 import router from "./routes/file.routes.js";
+app.use("/api/v1/file", router);
 
-app.use("/api/v1/file",router)
+export {app}
