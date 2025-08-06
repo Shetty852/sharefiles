@@ -4,7 +4,7 @@
 
 🔗 **GitHub Repo:** [github.com/Shetty852/sharefiles](https://github.com/Shetty852/sharefiles)  
 👨‍💻 **Developer:** Rohan Shetty (shettyrohan852@gmail.com)  
-🌐 **Live Demo:** [sharefiles-alpha.vercel.app]
+🌐 **Live Demo:** (sharefiles-alpha.vercel.app)
 
 ---
 
