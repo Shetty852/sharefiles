@@ -11,8 +11,8 @@ import ThemeContext from "../context/ThemeContext";
 const navLinks = [
   { name: "Home", href: "/#home", icon: "🏠", isHash: true },
   { name: "Send", href: "/#send", icon: "📤", isHash: true },
-  { name: "Bulk Upload", href: "/bulk-send", icon: "📁", isHash: false },
   { name: "Receive", href: "/#receive", icon: "🗂️", isHash: true },
+  { name: "Bulk Upload", href: "/bulk-send", icon: "📁", isHash: false },
   { name: "Bulk Receive", href: "/bulk-receive", icon: "📦", isHash: false },
   { name: "About", href: "/about", icon: "📜", isHash: false },
 ];
