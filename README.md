@@ -3,7 +3,6 @@
 A modern file sharing platform built with the MERN stack. Share files securely with unique codes and QR codes. Files auto-expire after 5 minutes for privacy.
 
 🌐 **Live Demo:**  
-- [https://sharefiles-alpha.vercel.app](https://sharefiles-alpha.vercel.app)  
 - [https://filesnest.vercel.app/](https://filesnest.vercel.app/)  
 👨‍💻 **Developer:** Rohan Shetty  
 🔗 **GitHub:** [github.com/Shetty852/sharefiles](https://github.com/Shetty852/sharefiles)
